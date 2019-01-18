@@ -9,6 +9,13 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import { compose } from './helpers';
 
+function wait(ms) {
+     var start = Date.now(),
+         now = start;
+     while (now - start < ms) {
+       now = Date.now();
+     }
+ }
 // transform snake_case to camelCase
 const formattedSuggestion = structured_formatting => ({
   mainText: structured_formatting.main_text,
@@ -53,6 +60,9 @@ class PlacesAutocomplete extends React.Component {
   }
 
   init = () => {
+     while (!window.google) {
+       wait(100)
+     }
     if (!window.google) {
       throw new Error(
         '[react-places-autocomplete]: Google Maps JavaScript API library must be loaded. See: https://github.com/kenny-hibino/react-places-autocomplete#load-google-library'
